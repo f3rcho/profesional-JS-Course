@@ -1,44 +1,44 @@
-function MediaPlayer(config) {
-    this.media = config.el;
-    this.plugins = config.plugins || [];
-
-    //mediaplayer method
-    this._initPlugins();
-}
-
-MediaPlayer.prototype._initPlugins = function() {
-    const player = {
-        play: () => this.play(),
-        pause: () => this.pause(),
-        media: this.media,
-        get muted() {
-            return this.media.muted;
-        },
-
-        set muted(value) {
-            this.media.muted = value;
-        }
+class MediaPlayer {
+    constructor(config) {
+        this.media = config.el;
+        this.plugins = config.plugins || [];
+        //mediaplayer method
+        this._initPlugins();
     }
-    this.plugins.forEach(plugin => {
-        plugin.run(player)
-    })
+    _initPlugins() {
+        const player = {
+            play: () => this.play(),
+            pause: () => this.pause(),
+            media: this.media,
+            get muted() {
+                return this.media.muted;
+            },
+            set muted(value) {
+                this.media.muted = value;
+            }
+        };
+        this.plugins.forEach(plugin => {
+            plugin.run(player);
+        });
+    }
+    play() {
+        this.media.play();
+    }
+    pause() {
+        this.media.pause();
+    }
+    togglePlay() {
+        console.log(this.media.paused);
+        (this.media.paused) ? this.play() : this.pause();
+    }
+    mute() {
+        this.media.muted = true;
+    }
+    unmute() {
+        this.media.muted = false;
+    }
 }
 
-MediaPlayer.prototype.play = function() {
-    this.media.play()
-}
-MediaPlayer.prototype.pause = function() {
-    this.media.pause()
-}
 
-MediaPlayer.prototype.togglePlay = function () {
-    console.log(this.media.paused);
-    (this.media.paused) ? this.play() : this.pause()
-}
-MediaPlayer.prototype.mute = function () {
-    this.media.muted = true;
-}
-MediaPlayer.prototype.unmute = function () {
-    this.media.muted = false;
-}
+
 export default MediaPlayer

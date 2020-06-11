@@ -21,8 +21,30 @@ class Field {
 }
 
 function RequiredFieldDecorator(field: Field) {
+  let validate = field.validate;
+
+  field.validate = function() {
+    validate();
+    let value = field.input.value;
+    if (!value) {
+      field.errors.push('Required')
+    }
+  };
+  return field;
+}
+function EmailFieldDecorator(field: Field) {
+  let validate = field.validate;
+
+  field.validate = function() {
+    validate();
+    let value = field.input.value;
+    if (value.indexOf("@") === -1) {
+      field.errors.push('Must be an email')
+    }
+  };
   return field;
 }
 
 let field = new Field(document.querySelector('#email'));
-RequiredFieldDecorator(field);
+field = RequiredFieldDecorator(field);
+field = EmailFieldDecorator(field);
